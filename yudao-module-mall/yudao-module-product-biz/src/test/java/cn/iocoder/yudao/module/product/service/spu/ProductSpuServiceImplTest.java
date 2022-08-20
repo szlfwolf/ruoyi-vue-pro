@@ -32,6 +32,7 @@ import static org.mockito.Mockito.*;
 * @author 芋道源码
 */
 @Import(ProductSpuServiceImpl.class)
+@Disabled
 public class ProductSpuServiceImplTest extends BaseDbUnitTest {
 
     @Resource

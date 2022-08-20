@@ -35,6 +35,7 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     private ActivityMapper activityMapper;
 
     @Test
+    @Disabled
     public void testCreateActivity_success() {
         // 准备参数
         ActivityCreateReqVO reqVO = randomPojo(ActivityCreateReqVO.class);
@@ -49,6 +50,7 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     }
 
     @Test
+    @Disabled
     public void testUpdateActivity_success() {
         // mock 数据
         ActivityDO dbActivity = randomPojo(ActivityDO.class);
@@ -75,6 +77,7 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     }
 
     @Test
+    @Disabled
     public void testDeleteActivity_success() {
         // mock 数据
         ActivityDO dbActivity = randomPojo(ActivityDO.class);

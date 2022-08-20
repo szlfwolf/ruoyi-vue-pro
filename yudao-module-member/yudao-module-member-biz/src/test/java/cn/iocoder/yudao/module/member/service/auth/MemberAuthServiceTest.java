@@ -13,6 +13,7 @@ import cn.iocoder.yudao.module.system.api.oauth2.OAuth2TokenApi;
 import cn.iocoder.yudao.module.system.api.logger.LoginLogApi;
 import cn.iocoder.yudao.module.system.api.sms.SmsCodeApi;
 import cn.iocoder.yudao.module.system.api.social.SocialUserApi;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.when;
  * @author 宋天
  */
 @Import({MemberAuthServiceImpl.class, YudaoRedisAutoConfiguration.class})
+@Disabled
 public class MemberAuthServiceTest extends BaseDbAndRedisUnitTest {
 
     // TODO @芋艿：登录相关的单测，待补全

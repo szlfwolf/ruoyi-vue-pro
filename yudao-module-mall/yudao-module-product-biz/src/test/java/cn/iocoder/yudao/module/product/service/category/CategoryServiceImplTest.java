@@ -29,6 +29,7 @@ import static org.junit.jupiter.api.Assertions.*;
  * @author 芋道源码
  */
 @Import(CategoryServiceImpl.class)
+@Disabled
 public class CategoryServiceImplTest extends BaseDbUnitTest {
 
     @Resource

@@ -26,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 * @author 芋道源码
 */
 @Import(AddressServiceImpl.class)
+@Disabled
 public class AddressServiceImplTest extends BaseDbUnitTest {
 
     @Resource

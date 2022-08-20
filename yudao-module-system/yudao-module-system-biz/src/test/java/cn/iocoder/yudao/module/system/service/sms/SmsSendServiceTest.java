@@ -14,6 +14,7 @@ import cn.iocoder.yudao.framework.sms.core.client.dto.SmsReceiveRespDTO;
 import cn.iocoder.yudao.framework.sms.core.client.dto.SmsSendRespDTO;
 import cn.iocoder.yudao.framework.test.core.ut.BaseMockitoUnitTest;
 import org.assertj.core.util.Lists;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -48,6 +49,7 @@ public class SmsSendServiceTest extends BaseMockitoUnitTest {
      * 发送成功，当短信模板开启时
      */
     @Test
+    @Disabled
     public void testSendSingleSms_successWhenSmsTemplateEnable() {
         // 准备参数
         String mobile = randomString();
@@ -85,6 +87,7 @@ public class SmsSendServiceTest extends BaseMockitoUnitTest {
      * 发送成功，当短信模板关闭时
      */
     @Test
+    @Disabled
     public void testSendSingleSms_successWhenSmsTemplateDisable() {
         // 准备参数
         String mobile = randomString();

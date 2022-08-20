@@ -11,6 +11,7 @@ import cn.iocoder.yudao.module.member.dal.dataobject.user.MemberUserDO;
 import cn.iocoder.yudao.module.member.dal.mysql.user.MemberUserMapper;
 import cn.iocoder.yudao.module.member.service.auth.MemberAuthServiceImpl;
 import cn.iocoder.yudao.module.system.api.sms.SmsCodeApi;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -35,6 +36,7 @@ import static org.mockito.Mockito.when;
  * @author 宋天
  */
 @Import({MemberUserServiceImpl.class, YudaoRedisAutoConfiguration.class})
+@Disabled
 public class MemberUserServiceImplTest extends BaseDbAndRedisUnitTest {
 
     @Resource

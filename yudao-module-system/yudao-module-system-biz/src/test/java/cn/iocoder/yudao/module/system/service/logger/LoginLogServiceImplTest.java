@@ -65,9 +65,9 @@ public class LoginLogServiceImplTest extends BaseDbUnitTest {
         // 构造调用参数
         LoginLogPageReqVO reqVO = new LoginLogPageReqVO();
         reqVO.setUsername("wangkai");
-        reqVO.setUserIp("192.168.199");
+        reqVO.setUserIp("192.168.199.16");
         reqVO.setStatus(true);
-        reqVO.setCreateTime((new Date[]{buildTime(2021, 3, 5),buildTime(2021, 3, 5)}));
+        reqVO.setCreateTime((new Date[]{buildTime(2021, 3, 5),buildTime(2021, 3, 6)}));
 
         // 调用service方法
         PageResult<LoginLogDO> pageResult = loginLogService.getLoginLogPage(reqVO);
@@ -110,7 +110,7 @@ public class LoginLogServiceImplTest extends BaseDbUnitTest {
         reqVO.setUsername("wangxiaokai");
         reqVO.setUserIp("192.168.111");
         reqVO.setStatus(true);
-        reqVO.setCreateTime((new Date[]{buildTime(2021, 3, 5),buildTime(2021, 3, 5)}));
+        reqVO.setCreateTime((new Date[]{buildTime(2021, 3, 5),buildTime(2021, 3, 6)}));
 
         // 调用service方法
         List<LoginLogDO> loginLogList = loginLogService.getLoginLogList(reqVO);

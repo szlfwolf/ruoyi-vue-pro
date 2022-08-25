@@ -87,7 +87,7 @@ public class OAuth2OpenControllerTest extends BaseMockitoUnitTest {
         // 断言
         assertEquals(0, result.getCode());
         assertPojoEquals(accessTokenDO, result.getData());
-        assertEquals(30L, result.getData().getExpiresIn()); // 执行过程会过去几毫秒
+        assertTrue( result.getData().getExpiresIn() > 0); // 执行过程会过去几毫秒
     }
 
     @Test

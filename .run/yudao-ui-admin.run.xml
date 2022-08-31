@@ -2,7 +2,7 @@
   <configuration default="false" name="yudao-ui-admin" type="docker-deploy" factoryName="dockerfile" activateToolWindowBeforeRun="false" server-name="Docker">
     <deployment type="dockerfile">
       <settings>
-        <option name="imageTag" value="yudao-ui-admin" />
+        <option name="imageTag" value="yudao-ui-admin:1.6.4-snapshot" />
         <option name="containerName" value="yudao-ui-admin" />
         <option name="portBindings">
           <list>
@@ -12,7 +12,6 @@
             </DockerPortBindingImpl>
           </list>
         </option>
-        <option name="commandLineOptions" value="--link yudao-server:yudao-server " />
         <option name="showCommandPreview" value="true" />
         <option name="sourceFilePath" value="yudao-ui-admin/Dockerfile" />
       </settings>

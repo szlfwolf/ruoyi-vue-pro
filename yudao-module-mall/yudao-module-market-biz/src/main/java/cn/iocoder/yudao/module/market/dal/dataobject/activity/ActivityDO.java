@@ -60,5 +60,9 @@ public class ActivityDO extends BaseDO {
      * 限制折扣字符串，使用 JSON 序列化成字符串存储
      */
     private String fullPrivilege;
+    /**
+     * 组合id
+     */
+    private Long tenantId;
 
 }

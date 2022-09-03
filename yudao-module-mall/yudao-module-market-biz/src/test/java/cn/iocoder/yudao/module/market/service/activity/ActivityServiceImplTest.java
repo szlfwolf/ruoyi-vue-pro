@@ -1,5 +1,10 @@
 package cn.iocoder.yudao.module.market.service.activity;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.date.DateTime;
+import cn.hutool.core.date.DateUtil;
+import cn.iocoder.yudao.module.market.enums.activity.MarketActivityStatusEnum;
+import cn.iocoder.yudao.module.market.enums.activity.MarketActivityTypeEnum;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -13,6 +18,11 @@ import cn.iocoder.yudao.module.market.dal.mysql.activity.ActivityMapper;
 import cn.iocoder.yudao.framework.common.pojo.PageResult;
 
 import org.springframework.context.annotation.Import;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 
 import static cn.iocoder.yudao.module.market.enums.ErrorCodeConstants.*;
 import static cn.iocoder.yudao.framework.test.core.util.AssertUtils.*;
@@ -21,10 +31,10 @@ import static cn.iocoder.yudao.framework.common.util.object.ObjectUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
-* {@link ActivityServiceImpl} 的单元测试类
-*
-* @author 芋道源码
-*/
+ * {@link ActivityServiceImpl} 的单元测试类
+ *
+ * @author 芋道源码
+ */
 @Import(ActivityServiceImpl.class)
 public class ActivityServiceImplTest extends BaseDbUnitTest {
 
@@ -35,10 +45,11 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     private ActivityMapper activityMapper;
 
     @Test
-    @Disabled
     public void testCreateActivity_success() {
         // 准备参数
-        ActivityCreateReqVO reqVO = randomPojo(ActivityCreateReqVO.class);
+        ActivityCreateReqVO reqVO = randomPojo(ActivityCreateReqVO.class,
+                a -> a.setActivityType(MarketActivityTypeEnum.FULL_PRIVILEGE.getValue()),
+                b -> b.setStatus(MarketActivityStatusEnum.WAIT.getValue()));
 
         // 调用
         Long activityId = activityService.createActivity(reqVO);
@@ -50,7 +61,6 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     }
 
     @Test
-    @Disabled
     public void testUpdateActivity_success() {
         // mock 数据
         ActivityDO dbActivity = randomPojo(ActivityDO.class);
@@ -58,6 +68,8 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
         // 准备参数
         ActivityUpdateReqVO reqVO = randomPojo(ActivityUpdateReqVO.class, o -> {
             o.setId(dbActivity.getId()); // 设置更新的 ID
+            o.setActivityType(MarketActivityTypeEnum.FULL_PRIVILEGE.getValue());
+            o.setStatus(MarketActivityStatusEnum.WAIT.getValue());
         });
 
         // 调用
@@ -77,7 +89,6 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     }
 
     @Test
-    @Disabled
     public void testDeleteActivity_success() {
         // mock 数据
         ActivityDO dbActivity = randomPojo(ActivityDO.class);
@@ -87,8 +98,8 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
 
         // 调用
         activityService.deleteActivity(id);
-       // 校验数据不存在了
-       assertNull(activityMapper.selectById(id));
+        // 校验数据不存在了
+        assertNull(activityMapper.selectById(id));
     }
 
     @Test
@@ -101,100 +112,63 @@ public class ActivityServiceImplTest extends BaseDbUnitTest {
     }
 
     @Test
-    @Disabled  // TODO 请修改 null 为需要的值，然后删除 @Disabled 注解
     public void testGetActivityPage() {
-       // mock 数据
-       ActivityDO dbActivity = randomPojo(ActivityDO.class, o -> { // 等会查询到
-           o.setTitle(null);
-           o.setActivityType(null);
-           o.setStatus(null);
-           o.setStartTime(null);
-           o.setEndTime(null);
-           o.setInvalidTime(null);
-           o.setDeleteTime(null);
-           o.setTimeLimitedDiscount(null);
-           o.setFullPrivilege(null);
-           o.setCreateTime(null);
-       });
-       activityMapper.insert(dbActivity);
-       // 测试 title 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTitle(null)));
-       // 测试 activityType 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setActivityType(null)));
-       // 测试 status 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStatus(null)));
-       // 测试 startTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStartTime(null)));
-       // 测试 endTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setEndTime(null)));
-       // 测试 invalidTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setInvalidTime(null)));
-       // 测试 deleteTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setDeleteTime(null)));
-       // 测试 timeLimitedDiscount 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTimeLimitedDiscount(null)));
-       // 测试 fullPrivilege 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setFullPrivilege(null)));
-       // 测试 createTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setCreateTime(null)));
-       // 准备参数
-       ActivityPageReqVO reqVO = new ActivityPageReqVO();
-       reqVO.setTitle(null);
-       reqVO.setActivityType(null);
-       reqVO.setStatus(null);
-       reqVO.setStartTime(null);
-       reqVO.setEndTime(null);
-       reqVO.setInvalidTime(null);
-       reqVO.setDeleteTime(null);
-       reqVO.setTimeLimitedDiscount(null);
-       reqVO.setFullPrivilege(null);
-       reqVO.setCreateTime(null);
+        // mock 数据
+        ActivityDO dbActivity = randomPojo(ActivityDO.class);
+        activityMapper.insert(dbActivity);
+        insertCloneActivity(dbActivity);
+        // 准备参数
+        ActivityPageReqVO reqVO = new ActivityPageReqVO();
+        reqVO.setTitle(dbActivity.getTitle());
+        reqVO.setActivityType(dbActivity.getActivityType());
+        reqVO.setStatus(dbActivity.getStatus());
+        reqVO.setTimeLimitedDiscount(dbActivity.getTimeLimitedDiscount());
+        reqVO.setFullPrivilege(dbActivity.getFullPrivilege());
+        reqVO.setCreateTime(new Date[]{dbActivity.getCreateTime()});
 
-       // 调用
-       PageResult<ActivityDO> pageResult = activityService.getActivityPage(reqVO);
-       // 断言
-       assertEquals(1, pageResult.getTotal());
-       assertEquals(1, pageResult.getList().size());
-       assertPojoEquals(dbActivity, pageResult.getList().get(0));
+        // 调用
+        PageResult<ActivityDO> pageResult = activityService.getActivityPage(reqVO);
+        // 断言
+        assertEquals(1, pageResult.getTotal());
+        assertEquals(1, pageResult.getList().size());
+        assertPojoEquals(dbActivity, pageResult.getList().get(0));
     }
 
     @Test
-    @Disabled  // TODO 请修改 null 为需要的值，然后删除 @Disabled 注解
     public void testGetActivityList() {
-       // mock 数据
-       ActivityDO dbActivity = randomPojo(ActivityDO.class, o -> { // 等会查询到
-           o.setTitle(null);
-           o.setActivityType(null);
-           o.setStatus(null);
-           o.setStartTime(null);
-           o.setEndTime(null);
-           o.setInvalidTime(null);
-           o.setDeleteTime(null);
-           o.setTimeLimitedDiscount(null);
-           o.setFullPrivilege(null);
-           o.setCreateTime(null);
-       });
-       activityMapper.insert(dbActivity);
-       // 测试 title 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTitle(null)));
-       // 测试 activityType 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setActivityType(null)));
-       // 测试 status 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStatus(null)));
-       // 测试 startTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStartTime(null)));
-       // 测试 endTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setEndTime(null)));
-       // 测试 invalidTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setInvalidTime(null)));
-       // 测试 deleteTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setDeleteTime(null)));
-       // 测试 timeLimitedDiscount 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTimeLimitedDiscount(null)));
-       // 测试 fullPrivilege 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setFullPrivilege(null)));
-       // 测试 createTime 不匹配
-       activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setCreateTime(null)));
+        // mock 数据
+        ActivityDO dbActivity = randomPojo(ActivityDO.class);
+        activityMapper.insert(dbActivity);
+        insertCloneActivity(dbActivity);
+        // 调用
+        List<ActivityDO> list = activityService.getActivityList(Arrays.asList(dbActivity.getId()));
+        // 断言
+        assertPojoEquals(dbActivity, list.get(0));
     }
 
+
+    private void insertCloneActivity(ActivityDO dbActivity) {
+        // 测试 title 不匹配
+        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTitle(o.getTitle() + System.currentTimeMillis())));
+        // 测试 activityType 不匹配
+        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setActivityType(MarketActivityTypeEnum.FULL_PRIVILEGE.getValue())));
+        // 测试 status 不匹配
+        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStatus(MarketActivityStatusEnum.WAIT.getValue())));
+        // 测试 timeLimitedDiscount 不匹配
+        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setTimeLimitedDiscount(o.getTimeLimitedDiscount() + System.currentTimeMillis())));
+        // 测试 fullPrivilege 不匹配
+        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setFullPrivilege(o.getFullPrivilege() + System.currentTimeMillis())));
+
+//        // 测试 startTime 不匹配
+//        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setStartTime(DateTime.now())));
+//        // 测试 endTime 不匹配
+//        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setEndTime(DateTime.now())));
+//        // 测试 deleteTime 不匹配
+//        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setDeleteTime(DateTime.now())));
+//        // 测试 invalidTime 不匹配
+//        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setInvalidTime(DateTime.now())));
+//        // 测试 createTime 不匹配
+//        activityMapper.insert(cloneIgnoreId(dbActivity, o -> o.setCreateTime(DateTime.now())));
+
+    }
 }

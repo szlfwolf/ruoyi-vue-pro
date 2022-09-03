@@ -56,4 +56,8 @@ public class ActivityBaseVO {
     @ApiModelProperty(value = "限制折扣字符串，使用 JSON 序列化成字符串存储")
     private String fullPrivilege;
 
+    @ApiModelProperty(value = "租户id")
+    @NotNull(message = "租户id不能为空")
+    private Long tenantId;
+
 }

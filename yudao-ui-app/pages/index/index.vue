@@ -280,7 +280,7 @@ export default {
   }
 
   .prod-grid {
-    width: 730rpx;
+    width: 732rpx;
     margin: 0 auto;
     @include flex;
     flex-wrap: wrap;

@@ -18,17 +18,8 @@
       <el-form-item label="联系人" prop="contact">
         <el-input v-model="queryParams.contact" placeholder="请输入联系人" clearable @keyup.enter.native="handleQuery"/>
       </el-form-item>
-      <el-form-item label="联系人电话" prop="contactPhone">
+      <el-form-item label="电话" prop="contactPhone">
         <el-input v-model="queryParams.contactPhone" placeholder="请输入联系人电话" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="备注" prop="remark">
-        <el-input v-model="queryParams.remark" placeholder="请输入备注" clearable @keyup.enter.native="handleQuery"/>
-      </el-form-item>
-      <el-form-item label="开启状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择开启状态" clearable size="small">
-          <el-option v-for="dict in this.getDictDatas(DICT_TYPE.COMMON_STATUS)"
-                     :key="dict.value" :label="dict.label" :value="dict.value"/>
-        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" @click="handleQuery">搜索</el-button>
